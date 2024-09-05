@@ -1,5 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
+import math
 
 #region Define parameters
 #Positive Affect Para
@@ -18,10 +19,11 @@ lambda_Df = 0.03
 
 #Willignness to Intereact Para
 beta_Si = 0.5    #Short-Term
-gamma_Li = 0.1   #Long-Term
+gamma_Li = 0.5   #Long-Term
 
 #Readiness to Interact Para
 omega_Ri = 0.5
+beta_Ri = 1.0
 
 #endregion
 
@@ -40,37 +42,49 @@ Li = np.zeros_like(time)
 Ri = np.zeros_like(time)
 
 #Input Conditions
-Ha = 0.7
-Sd = 0.2
-Fe = 0.4
+Ha = 0.7 #Happiness
+Sd = 0.1 #Sadness
+Fe = 0.7 #Fear
+Ex = 0.7 #Extrovertness
+Op = 0.8 #Openness
+Nu = 0.9 #Neuroticism
+Eh = 0.5 #Level of Exhaustion
+
+#Inter-Agent Variables
+Nc = 0.5 #Cultural Preference Similarities
+Ni = 0.5 #Interest Similarities
 
 # Initial conditions
-Dh[0] = Ha #Dynamic Happiness
-Ds[0] = Sd
-Df[0] = Fe
-Pa[0] = 0.0
+Dh[0] = 0.01
+Ds[0] = 0.01
+Df[0] = 0.01
+Pa[0] = 0.01
 Si[0] = 0.2
-Li[0] = 0.0
-Ri[0] = 0.0
+Li[0] = 0.01
+Ri[0] = 0.01
 
 # Simulation loop
-for i in range(1, len(time)):
+for t in range(1, len(time)):
     #Dyanmic Emotions
-    Dh[i] = Dh[i-1] + gamma_Dh * (Pa[i-1] - lambda_Dh) * Dh[i-1] * (1 - Dh[i-1]) * dt
-    Ds[i] = Ds[i-1] + gamma_Ds * (Pa[i-1] - lambda_Ds) * Ds[i-1] * (1 - Ds[i-1]) * dt
-    Df[i] = Df[i-1] + gamma_Df * (Pa[i-1] - lambda_Df) * Df[i-1] * (1 - Df[i-1]) * dt
+    Dh[t] = Dh[t-1] + gamma_Dh * (Ha - lambda_Dh) * Dh[t-1] * (1 - Dh[t-1]) * dt
+    Ds[t] = Ds[t-1] + gamma_Ds * (Sd - lambda_Ds) * Ds[t-1] * (1 - Ds[t-1]) * dt
+    Df[t] = Df[t-1] + gamma_Df * (Fe - lambda_Df) * Df[t-1] * (1 - Df[t-1]) * dt
     
     #Postiive Affect
-    Pa[i] = Dh[i] - beta_Pa * Ds[i]
+    Pa[t] = Dh[t] - beta_Pa * Ds[t]
     
     # Willingness to  Interact
     # Short Term
-    Si[i] = beta_Si * Pa[i] + (1 - beta_Si) * (omega_Ps * Dh[i] + (1 - omega_Ps) * Ds[i]) * (1 - Df[i])
+    Si[t] = beta_Si * Pa[t] + (1 - beta_Si) * (omega_Ps * Ex + (1 - omega_Ps) * Op) * Nc * (1 - Eh)
     # Long Term
-    Li[i] = Li[i-1] + gamma_Li * (Si[i-1] - Li[i-1]) * (1 - Li[i-1]) * dt
+    Li[t] = Li[t-1] + gamma_Li * (Si[t-1] - Li[t-1]) * (1 - Li[t-1]) * Li[t-1] * dt
+    
+    #Experienced Fear
+    k = 1.0
+    Psi = 1/(1+math.e**(-1*k*(Df[t]*Nu)))
     
     #Interaction Readiness
-    Ri[i] = omega_Ri * Si[i] + (1 - omega_Ri) * Li[i]
+    Ri[t] = beta_Ri*(omega_Ri * Si[t] + (1 - omega_Ri) * Li[t]) * Ni * (1-Psi)
 
 # Plotting results
 plt.figure(figsize=(12, 8))
