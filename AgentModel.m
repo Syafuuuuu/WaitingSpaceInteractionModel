@@ -13,12 +13,12 @@ maxLimY = 1.2;      % graph Y axis max
 minLimX = 0;        % graph X axis min
 maxLimChangeY = 0.1;
 minLimChangeY = -0.1;
-numStep =500;
-numStepChange =500;
+numStep =1000;
+numStepChange =1000;
 numAgent = 3;
-dt=0.1;
+dt= 0.1;
 
-k = 1.0; #Psi Cap
+k = 0.5; #Psi Cap
 
 
 
@@ -50,7 +50,7 @@ dfLi = zeros(numAgent,numStepChange);
 % Initialisation of all instantaneous parameters
 
 % Positive Affect Para
-beta_Pa = 0.5;
+beta_Pa = 0.2;
 
 % Personality Para
 omega_Ps = 0.5;
@@ -159,8 +159,9 @@ end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 for i = 1:numAgent
+
   % Positive Affect
-  Pa(i, 1) = Dh(i, 1) - beta_Pa * Ds(i, 1);
+  Pa(i, 1) = Dh(i, 1) - (beta_Pa * Ds(i, 1));
 
   % Short Term Willingness to Interact
   Si(i, 1) = beta_Si * Pa(i, 1) + (1 - beta_Si) * (omega_Ps * Ex(i, 1) + (1 - omega_Ps) * Op(i, 1)) * Nc(i, 1) * (1 - Eh(i, 1));
@@ -179,11 +180,19 @@ end
 for t = 2:numStep
   for i=1:numAgent
 
+    % Dynamic Emotions
+    Dh(i, t) = Dh(i, t-1) + gamma_Dh * (Ha(i,t-1) - lambda_Dh) * Dh(i, t-1) * (1 - Dh(i, t-1)) * dt;
+    Ds(i, t) = Ds(i, t-1) + gamma_Ds * (Sd(i,t-1) - lambda_Ds) * Ds(i, t-1) * (1 - Ds(i, t-1)) * dt;
+    Df(i, t) = Df(i, t-1) + gamma_Df * (Fe(i,t-1) - lambda_Df) * Df(i, t-1) * (1 - Df(i, t-1)) * dt;
+
     % Positive Affect
-    Pa(i, t) = Dh(i, t) - beta_Pa * Ds(i, t);
+    Pa(i, t) = Dh(i, t) - (beta_Pa * Ds(i, t));
 
     % Short Term Willingness to Interact
     Si(i, t) = beta_Si * Pa(i, t) + (1 - beta_Si) * (omega_Ps * Ex(i, t) + (1 - omega_Ps) * Op(i, t)) * Nc(i, t) * (1 - Eh(i, t));
+
+    % Long Term
+    Li(i, t) = Li(i,t-1) + gamma_Li * (Si(i,t-1) - Li(i,t-1)) * (1 - Li(i,t-1)) * Li(i,t-1) * dt;
 
     % Experienced Fear
     Psi(i, t) = 1 / (1 + exp(-k * (Df(i, t) * Nu(i, t))));
@@ -191,18 +200,9 @@ for t = 2:numStep
     % Interaction Readiness
     Ri(i, t) = beta_Ri * (omega_Ri * Si(i, t) + (1 - omega_Ri) * Li(i, t)) * Ni(i, t) * (1 - Psi(i, t));
 
-  % ---- Temporal Specifications ----
+  endfor
 
-    % Dynamic Emotions
-    Dh(i, t) = Dh(i, t-1) + gamma_Dh * (Ha(i,t-1) - lambda_Dh) * Dh(i, t-1) * (1 - Dh(i, t-1)) * dt;
-    Ds(i, t) = Ds(i, t-1) + gamma_Ds * (Sd(i,t-1) - lambda_Ds) * Ds(i, t-1) * (1 - Ds(i, t-1)) * dt;
-    Df(i, t) = Df(i, t-1) + gamma_Df * (Fe(i,t-1) - lambda_Df) * Df(i, t-1) * (1 - Df(i, t-1)) * dt;
-
-    % Long Term
-    Li(i, t) = Li(i,t-1) + gamma_Li * (Si(i,t-1) - Li(i,t-1)) * (1 - Li(i,t-1)) * Li(i,t-1) * dt;
-  end
-
-end
+endfor
 
 % checking equillibria
 for t=3:numStepChange
@@ -211,8 +211,8 @@ for t=3:numStepChange
     dfDs(i,t) = Ds(i,t-1) - Ds(i, t-2);
     dfDf(i,t) = Df(i,t-1) - Df(i, t-2);
     dfLi(i,t) = Li(i,t-1) - Li(i, t-2);
-  end
-end
+  endfor
+endfor
 
 
 
