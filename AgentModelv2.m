@@ -15,11 +15,24 @@ maxLimChangeY = 0.1;
 minLimChangeY = -0.1;
 numStep =1000;
 numStepChange =1000;
-numAgent = 3;
 dt= 0.1;
 
 k = 0.5; #Psi Cap
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Agent Object
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Initialize the 2D array for agents
+agentArray = [
+    0.1, 0.9, 0.9, 0.1, 0.1, 0.9, 0.9, 0.1, 0.1;
+    0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5;
+    0.9, 0.1, 0.1, 0.9, 0.9, 0.1, 0.1, 0.9, 0.9;
+    0.9, 0.1, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5
+];
+
+% Determine the number of agents based on the size of the array
+[numAgents, numAttributes] = size(agentArray);
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -27,22 +40,22 @@ k = 0.5; #Psi Cap
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % Instantaneous
-Pa = zeros(numAgent, numStep);
-Si = zeros(numAgent, numStep);
-Ri = zeros(numAgent, numStep);
+Pa = zeros(numAgents, numStep);
+Si = zeros(numAgents, numStep);
+Ri = zeros(numAgents, numStep);
 
 %Temporal
-Dh = zeros(numAgent, numStep);
-Ds = zeros(numAgent, numStep);
-Df = zeros(numAgent, numStep);
-Li = zeros(numAgent, numStep);
-Psi = zeros(numAgent, numStep);
+Dh = zeros(numAgents, numStep);
+Ds = zeros(numAgents, numStep);
+Df = zeros(numAgents, numStep);
+Li = zeros(numAgents, numStep);
+Psi = zeros(numAgents, numStep);
 
 %Difference
-dfDh = zeros(numAgent,numStepChange);
-dfDs = zeros(numAgent,numStepChange);
-dfDf = zeros(numAgent,numStepChange);
-dfLi = zeros(numAgent,numStepChange);
+dfDh = zeros(numAgents,numStepChange);
+dfDs = zeros(numAgents,numStepChange);
+dfDf = zeros(numAgents,numStepChange);
+dfLi = zeros(numAgents,numStepChange);
 
 
 
@@ -88,77 +101,39 @@ gamma_Li = 0.5;   % Long-Term
 
            %%% Setting temporal Factors %%%
 
-for i=1:numAgent
+for i=1:numAgents
   Dh(i, 1) = 0.5;
   Ds(i, 1) = 0.5;
   Df(i, 1) = 0.5;
   Li(i, 1) = 0.5;
+endfor
+
+
+
+% Now you can use the agents array in your model
+
+for t = 1:numStep
+    for i = 1:numAgents
+        % Access agent properties using agentArray(i, columnIndex)
+        Ha(i, t) = agentArray(i, 1); % Happiness
+        Sd(i, t) = agentArray(i, 2); % Sadness
+        Fe(i, t) = agentArray(i, 3); % Fear
+        Ex(i, t) = agentArray(i, 4); % Extrovertness
+        Op(i, t) = agentArray(i, 5); % Openness
+        Nu(i, t) = agentArray(i, 6); % Neuroticism
+        Eh(i, t) = agentArray(i, 7); % Exhaustion
+        Nc(i, t) = agentArray(i, 8); % Cultural Preference
+        Ni(i, t) = agentArray(i, 9); % Interest Similarity
+    end
 end
 
-
-
-           %%% Setting initial Factors %%%
-
-for t=1:numStep
-
-  %Introvert and Sad Boi
-  Ha(1, t) = 0.1; % Happiness
-  Sd(1, t) = 0.9; % Sadness
-  Fe(1, t) = 0.9; % Fear
-  Ex(1, t) = 0.1; % Extrovertness
-  Op(1, t) = 0.1; % Openness
-  Nu(1, t) = 0.9; % Neuroticism
-  Eh(1, t) = 0.9; % Level of Exhaustion
-
-  Nc(1, t) = 0.1; % Cultural Preference Similarities
-  Ni(1, t) = 0.1; % Interest Similarities
-
-##  Pa(1, t) = 0.5;    % Positive Affect
-##  Si(1, t) = 0.5;    % Short-Term Willingness
-##  Ri(1, t) = 0.5;    % Readiness to Interact
-
-
-  %Ambivert and Neutral
-  Ha(2, t) = 0.5; % Happiness
-  Sd(2, t) = 0.5; % Sadness
-  Fe(2, t) = 0.5; % Fear
-  Ex(2, t) = 0.5; % Extrovertness
-  Op(2, t) = 0.5; % Openness
-  Nu(2, t) = 0.5; % Neuroticism
-  Eh(2, t) = 0.5; % Level of Exhaustion
-
-  Nc(2, t) = 0.5; % Cultural Preference Similarities
-  Ni(2, t) = 0.5; % Interest Similarities
-
-##  Pa(2) = 0.5;    % Positive Affect
-##  Si(2) = 0.5;    % Short-Term Willingness
-##  Ri(2) = 0.5;    % Readiness to Interact
-
-
-  %Extrovert and Happy Af
-  Ha(3, t) = 0.9; % Happiness
-  Sd(3, t) = 0.1; % Sadness
-  Fe(3, t) = 0.1; % Fear
-  Ex(3, t) = 0.9; % Extrovertness
-  Op(3, t) = 0.9; % Openness
-  Nu(3, t) = 0.1; % Neuroticism
-  Eh(3, t) = 0.1; % Level of Exhaustion
-
-  Nc(3, t) = 0.9; % Cultural Preference Similarities
-  Ni(3, t) = 0.9; % Interest Similarities
-
-##  Pa(3) = 0.5;    % Positive Affect
-##  Si(3) = 0.5;    % Short-Term Willingness
-##  Ri(3) = 0.5;    % Readiness to Interact
-
-end
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Run the model at t=1
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-for i = 1:numAgent
+for i = 1:numAgents
 
   % Positive Affect
   Pa(i, 1) = Dh(i, 1) - (beta_Pa * Ds(i, 1));
@@ -171,14 +146,14 @@ for i = 1:numAgent
 
   % Interaction Readiness
   Ri(i, 1) = beta_Ri * (omega_Ri * Si(i, 1) + (1 - omega_Ri) * Li(i, 1)) * Ni(i, 1) * (1 - Psi(i, 1));
-end
+endfor
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Run the model at t=2
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 for t = 2:numStep
-  for i=1:numAgent
+  for i=1:numAgents
 
     % Dynamic Emotions
     Dh(i, t) = Dh(i, t-1) + gamma_Dh * (Ha(i,t-1) - lambda_Dh) * Dh(i, t-1) * (1 - Dh(i, t-1)) * dt;
@@ -206,7 +181,7 @@ endfor
 
 % checking equillibria
 for t=3:numStepChange
-  for i=1:numAgent
+  for i=1:numAgents
     dfDh(i,t) = Dh(i,t-1) - Dh(i, t-2);
     dfDs(i,t) = Ds(i,t-1) - Ds(i, t-2);
     dfDf(i,t) = Df(i,t-1) - Df(i, t-2);
@@ -225,30 +200,30 @@ endfor
   colormap('jet');
 
   subplot(2,2,1);
-  surf(Dh(1:numAgent,1:numStep));
+  surf(Dh(1:numAgents,1:numStep));
   xlabel('time steps');ylabel('agents');zlabel('levels');
-  xlim([0 numStep]);ylim([1 numAgent]);zlim([minLimX maxLimY]);
+  xlim([0 numStep]);ylim([1 numAgents]);zlim([minLimX maxLimY]);
   title('Dynamic Happiness')
   hold on
 
   subplot(2,2,2);
-  surf(Ds(1:numAgent,1:numStep));
+  surf(Ds(1:numAgents,1:numStep));
   xlabel('time steps');ylabel('agents');zlabel('levels');
-  xlim([0 numStep]);ylim([1 numAgent]);zlim([minLimX maxLimY]);
+  xlim([0 numStep]);ylim([1 numAgents]);zlim([minLimX maxLimY]);
   title('Dynamic Sadness')
   hold on
 
   subplot(2,2,3);
-  surf(Df(1:numAgent,1:numStep));
+  surf(Df(1:numAgents,1:numStep));
   xlabel('time steps');ylabel('agents');zlabel('levels');
-  xlim([0 numStep]);ylim([1 numAgent]);zlim([minLimX maxLimY]);
+  xlim([0 numStep]);ylim([1 numAgents]);zlim([minLimX maxLimY]);
   title('Dynamic Fear')
   hold on
 
   subplot(2,2,4);
-  surf(Li(1:numAgent,1:numStep));
+  surf(Li(1:numAgents,1:numStep));
   xlabel('time steps');ylabel('agents');zlabel('levels');
-  xlim([0 numStep]);ylim([1 numAgent]);zlim([minLimX maxLimY]);
+  xlim([0 numStep]);ylim([1 numAgents]);zlim([minLimX maxLimY]);
   title('Long-Term Willingness to Interact')
   hold on
 
@@ -257,63 +232,77 @@ endfor
   colormap('jet');
 
   subplot(2,2,1);
-  surf(Pa(1:numAgent,1:numStep));
+  surf(Pa(1:numAgents,1:numStep));
   xlabel('time steps');ylabel('agents');zlabel('levels');
-  xlim([0 numStep]);ylim([1 numAgent]);zlim([minLimX maxLimY]);
+  xlim([0 numStep]);ylim([1 numAgents]);zlim([minLimX maxLimY]);
   title('Positive Affect')
   hold on
 
   subplot(2,2,2);
-  surf(Si(1:numAgent,1:numStep));
+  surf(Si(1:numAgents,1:numStep));
   xlabel('time steps');ylabel('agents');zlabel('levels');
-  xlim([0 numStep]);ylim([1 numAgent]);zlim([minLimX maxLimY]);
+  xlim([0 numStep]);ylim([1 numAgents]);zlim([minLimX maxLimY]);
   title('Short-Term Willingness to Interact')
   hold on
 
   subplot(2,2,3);
-  surf(Ri(1:numAgent,1:numStep));
+  surf(Ri(1:numAgents,1:numStep));
   xlabel('time steps');ylabel('agents');zlabel('levels');
-  xlim([0 numStep]);ylim([1 numAgent]);zlim([minLimX maxLimY]);
+  xlim([0 numStep]);ylim([1 numAgents]);zlim([minLimX maxLimY]);
   title('Readiness to Interact')
   hold on
 
   subplot(2,2,4);
-  surf(Psi(1:numAgent,1:numStep));
+  surf(Psi(1:numAgents,1:numStep));
   xlabel('time steps');ylabel('agents');zlabel('levels');
-  xlim([0 numStep]);ylim([1 numAgent]);zlim([minLimX maxLimY]);
+  xlim([0 numStep]);ylim([1 numAgents]);zlim([minLimX maxLimY]);
   title('Experienced Fear')
   hold on
 
 % graph equillibria
   figure('Name', 'Equillibria State');
 
-  subplot(2,3,1);
-  plot (dfLi(1, 1:numStepChange),'--*');
-  title ('#1 - Long-Term Willingness to Interact');
-  hold on;
+  for t=1:numAgents
 
-  subplot(2,3,2);
-  plot (dfLi(2, 1:numStepChange),'--*');
-  title ('#2 - Long-Term Willingness to Interact');
-  hold on;
+    subplot(2,4,t);
+    plot (dfLi(1, 1:numStepChange),'--*');
+    title (['#'  num2str(t)  ' - Long-Term W2I']);
+    hold on;
 
-  subplot(2,3,3);
-  plot (dfLi(3, 1:numStepChange),'--*');
-  title ('#3 - Long-Term Willingness to Interact');
-  hold on;
+    subplot(2,4,(t+numAgents));
+    plot (dfDh(1, 1:numStepChange),'--*');
+    title (['#'  num2str(t)  ' - Dynamic Happiness']);
 
-  subplot(2,3,4);
-  plot (dfLi(1, 1:numStepChange),'--*');
-  title ('#1 - Dynamic Happiness');
-  hold on;
+    hold on;
+  endfor
 
-  subplot(2,3,5);
-  plot (dfLi(2, 1:numStepChange),'--*');
-  title ('#2 - ynamic Happiness');
-  hold on;
-
-  subplot(2,3,6);
-  plot (dfLi(3, 1:numStepChange),'--*');
-  title ('#3 - ynamic Happiness');
-  hold on;
+##  subplot(2,3,1);
+##  plot (dfLi(1, 1:numStepChange),'--*');
+##  title ('#1 - Long-Term W2I');
+##  hold on;
+##
+##  subplot(2,3,2);
+##  plot (dfLi(2, 1:numStepChange),'--*');
+##  title ('#2 - Long-Term W2I');
+##  hold on;
+##
+##  subplot(2,3,3);
+##  plot (dfLi(3, 1:numStepChange),'--*');
+##  title ('#3 - Long-Term W2I');
+##  hold on;
+##
+##  subplot(2,3,4);
+##  plot (dfHa(1, 1:numStepChange),'--*');
+##  title ('#1 - Dynamic Happiness');
+##  hold on;
+##
+##  subplot(2,3,5);
+##  plot (dfHa(2, 1:numStepChange),'--*');
+##  title ('#2 - Dynamic Happiness');
+##  hold on;
+##
+##  subplot(2,3,6);
+##  plot (dfHa(3, 1:numStepChange),'--*');
+##  title ('#3 - Dynamic Happiness');
+##  hold on;
 
