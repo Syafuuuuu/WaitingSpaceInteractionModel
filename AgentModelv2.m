@@ -17,7 +17,7 @@ numStep =1000;
 numStepChange =1000;
 dt= 0.1;
 
-k = 0.5; #Psi Cap
+k = 12; #Psi Cap
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Agent Object
@@ -27,8 +27,8 @@ k = 0.5; #Psi Cap
 agentArray = [
     0.1, 0.9, 0.9, 0.1, 0.1, 0.9, 0.9, 0.1, 0.1;
     0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5;
-    0.9, 0.1, 0.1, 0.9, 0.9, 0.1, 0.1, 0.9, 0.9;
-    0.9, 0.1, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5
+    0.9, 0.1, 0.1, 0.9, 0.9, 0.1, 0.1, 0.9, 0.9
+##    0.9, 0.1, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5
 ];
 
 % Determine the number of agents based on the size of the array
@@ -72,7 +72,7 @@ omega_Ps = 0.5;
 beta_Si = 0.5;    % Short-Term
 
 % Readiness to Interact Para
-omega_Ri = 0.5;
+omega_Ri = 0.;
 beta_Ri = 1.0;
 
 
@@ -170,7 +170,9 @@ for t = 2:numStep
     Li(i, t) = Li(i,t-1) + gamma_Li * (Si(i,t-1) - Li(i,t-1)) * (1 - Li(i,t-1)) * Li(i,t-1) * dt;
 
     % Experienced Fear
-    Psi(i, t) = 1 / (1 + exp(-k * (Df(i, t) * Nu(i, t))));
+##    Psi(i, t) = 1 / (1 + exp(-k * (Df(i, t) * Nu(i, t))));
+##      Psi(i, t) = 1 / (1 + exp(-k * ((Df(i, t) * Nu(i, t))-0.5)));
+      Psi(i, t) = Df(i, t) * Nu(i, t)/ (1 + exp(-k * (Df(i, t) * Nu(i, t))));
 
     % Interaction Readiness
     Ri(i, t) = beta_Ri * (omega_Ri * Si(i, t) + (1 - omega_Ri) * Li(i, t)) * Ni(i, t) * (1 - Psi(i, t));
@@ -275,34 +277,4 @@ endfor
 
     hold on;
   endfor
-
-##  subplot(2,3,1);
-##  plot (dfLi(1, 1:numStepChange),'--*');
-##  title ('#1 - Long-Term W2I');
-##  hold on;
-##
-##  subplot(2,3,2);
-##  plot (dfLi(2, 1:numStepChange),'--*');
-##  title ('#2 - Long-Term W2I');
-##  hold on;
-##
-##  subplot(2,3,3);
-##  plot (dfLi(3, 1:numStepChange),'--*');
-##  title ('#3 - Long-Term W2I');
-##  hold on;
-##
-##  subplot(2,3,4);
-##  plot (dfHa(1, 1:numStepChange),'--*');
-##  title ('#1 - Dynamic Happiness');
-##  hold on;
-##
-##  subplot(2,3,5);
-##  plot (dfHa(2, 1:numStepChange),'--*');
-##  title ('#2 - Dynamic Happiness');
-##  hold on;
-##
-##  subplot(2,3,6);
-##  plot (dfHa(3, 1:numStepChange),'--*');
-##  title ('#3 - Dynamic Happiness');
-##  hold on;
 
