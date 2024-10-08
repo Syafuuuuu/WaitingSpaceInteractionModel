@@ -3,6 +3,24 @@ import matplotlib.pyplot as plt
 
 st.set_page_config(layout="wide")
 
+class Agent:
+    
+    def __init__(self, name, Ha, Sd, Fe, Ex, Op, Nu, Eh, Nc, Ni) -> None:
+        self.name = name
+        self.Ha = Ha
+        self.Sd = Sd
+        self.Fe = Fe
+        self.Ex = Ex
+        self.Op = Op
+        self.Nu = Nu
+        self.Eh = Eh
+        self.Nc = Nc
+        self.Ni = Ni
+        self.Dh = 0.5
+        self.Ds = 0.5
+        self.Df = 0.5
+        self.Li = 0.5
+
 # Initialize session state for agents and television positions if not already initialized
 if 'agents' not in st.session_state:
     st.session_state.agents = []
@@ -11,7 +29,7 @@ if 'television' not in st.session_state:
     st.session_state.television = []
 
 # Create columns
-col1, col2 = st.columns([1, 2])
+col1, col2, col3, col4 = st.columns([2, 1, 1, 1])
 
 # Left side: Grid for agents and TV
 with col1:
@@ -59,36 +77,36 @@ with col1:
 
 # Right side: Split into top and bottom sections
 with col2:
-    # Top Section: Split into left and right
-    top_left, top_right = st.columns(2)
+    st.write("### Personality")
+    Ex = st.slider("Extravertness", min_value=0.0, max_value=1.0, step=0.1, key="Ex")
+    Op = st.slider("Openness", min_value=0.0, max_value=1.0, step=0.1, key="Op")
+    Nu = st.slider("Neuroticism", min_value=0.0, max_value=1.0, step=0.1, key="Nu")
     
-    with top_left:
-        st.write("### Personality")
-        personality_1 = st.text_input("Variable 1", "Calm", key="personality_1")
-        personality_2 = st.text_input("Variable 2", "Outgoing", key="personality_2")
-        personality_3 = st.text_input("Variable 3", "Assertive", key="personality_3")
-        
-        st.write("### Emotions")
-        emotions_1 = st.text_input("Emotion 1", "Happy", key="emotions_1")
-        emotions_2 = st.text_input("Emotion 2", "Anxious", key="emotions_2")
-        emotions_3 = st.text_input("Emotion 3", "Excited", key="emotions_3")
-        
-        st.write("### Exhaustion")
-        exhaustion_1 = st.text_input("Exhaustion Level 1", "Low", key="exhaustion_1")
-        exhaustion_2 = st.text_input("Exhaustion Level 2", "Moderate", key="exhaustion_2")
-        exhaustion_3 = st.text_input("Exhaustion Level 3", "High", key="exhaustion_3")
+    st.write("### Emotions")
+    Ha = st.slider("Happiness", min_value=0.0, max_value=1.0, step=0.1, key="Ha")
+    Sd = st.slider("Sadness", min_value=0.0, max_value=1.0, step=0.1, key="Sd")
+    Fe = st.slider("Fear", min_value=0.0, max_value=1.0, step=0.1, key="Fe")
     
-    with top_right:
-        st.write("### Hobbies")
-        hobbies = ['Cognitive', 'Cultural', 'Religious', 'Social', 'Gardening', 'Travelling', 'Physical']
-        for idx, hobby in enumerate(hobbies):
-            st.checkbox(hobby, key=f"hobby_{idx}")
-        
-        st.write("### Interests")
-        interests = ['Realistic', 'Investigating', 'Artistic', 'Social', 'Enterprising', 'Conventional']
-        for idx, interest in enumerate(interests):
-            st.checkbox(interest, key=f"interest_{idx}")
+    st.write("### Exhaustion")
+    Eh = st.slider("Exhaustion", min_value=0.0, max_value=1.0, step=0.1, key="Eh")
+
+
+with col3:
+    st.write("### Hobbies")
+    hobbies = ['Cognitive', 'Cultural', 'Religious', 'Social', 'Gardening', 'Travelling', 'Physical']
+    for idx, hobby in enumerate(hobbies):
+        st.checkbox(hobby, key=f"hobby_{idx}")
+
+with col4:
+    st.write("### Interests")
+    interests = ['Realistic', 'Investigating', 'Artistic', 'Social', 'Enterprising', 'Conventional']
+    for idx, interest in enumerate(interests):
+        st.checkbox(interest, key=f"interest_{idx}")
     
+#bottom Spacing
+bot_col1, bot_col2 = st.columns([2,3])
+
+with bot_col2:
     # Bottom Section: Three columns for Language, Race, Religion
     st.write("### Additional Information")
     col_lang, col_race, col_religion = st.columns(3)
@@ -99,14 +117,14 @@ with col2:
         st.checkbox("Malay", key="lang_malay")
         st.checkbox("Mandarin", key="lang_mandarin")
         st.checkbox("Tamil", key="lang_tamil")
-    
+
     with col_race:
         st.write("#### Race")
         st.checkbox("Malay", key="race_malay")
         st.checkbox("Chinese", key="race_chinese")
         st.checkbox("Indian", key="race_indian")
         st.checkbox("Others", key="race_others")
-    
+
     with col_religion:
         st.write("#### Religion")
         st.checkbox("Islam", key="religion_islam")
