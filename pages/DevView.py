@@ -22,13 +22,13 @@ class Agent:
         self.Df = 0.5
         self.Li = 0.5
 
-# Initialize session state for agents and television positions if not already initialized
-if 'agents' not in st.session_state:
-    st.session_state.agents = []
-    st.session_state.agentsDetail = []
+# # Initialize session state for agents and television positions if not already initialized
+# if 'agents' not in st.session_state:
+#     st.session_state.agents = []
+#     st.session_state.agentsDetail = []
 
-if 'television' not in st.session_state:
-    st.session_state.television = []
+# if 'television' not in st.session_state:
+#     st.session_state.television = []
 
 st.button('### Clear', type="primary")
 
@@ -134,6 +134,7 @@ with st.container():
                         print(agent.name)
                         print(agent.posX)
                         print(agent.posY)
+                        print(agent.Ni)
                     
                     
                     st.rerun()  # Re-render the app to update the grid
@@ -143,6 +144,8 @@ with st.container():
                 st.error("Please enter valid integer coordinates.")
             
         st.write("### Agent List")
+        for agent in st.session_state.agentsDetail:
+            st.write(agent.name)
         
     #bottom Spacing
     bot_col1, bot_col2 = st.columns([2,3])

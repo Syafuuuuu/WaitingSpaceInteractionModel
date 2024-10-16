@@ -261,6 +261,63 @@ endfor
   title('Experienced Fear')
   hold on
 
+% 2D Overlapping Lines Graph for Multiple Attributes
+  figure('Name', 'Agent Attributes Over Time');
+  colormap('jet'); % Optional: Change color map if desired
+
+  % Positive Affect
+  subplot(2, 2, 1); % Create a 2x2 grid and use the first subplot
+  hold on; % Hold on to plot all agents in the same subplot
+  for i = 1:numAgents
+      plot(Pa(i, 1:numStep), 'DisplayName', ['Agent ' num2str(i)]);
+  end
+  xlabel('Time Steps');
+  ylabel('Positive Affect');
+  title('Positive Affect Over Time');
+  legend('show');
+  grid on;
+  hold off; % Release hold for this subplot
+
+  % Short-Term Willingness to Interact
+  subplot(2, 2, 2); % Use the second subplot
+  hold on;
+  for i = 1:numAgents
+      plot(Si(i, 1:numStep), 'DisplayName', ['Agent ' num2str(i)]);
+  end
+  xlabel('Time Steps');
+  ylabel('Short-Term Willingness to Interact');
+  title('Short-Term Willingness to Interact Over Time');
+  legend('show');
+  grid on;
+  hold off;
+
+  % Experienced Fear
+  subplot(2, 2, 3); % Use the third subplot
+  hold on;
+  for i = 1:numAgents
+      plot(Psi(i, 1:numStep), 'DisplayName', ['Agent ' num2str(i)]);
+  end
+  xlabel('Time Steps');
+  ylabel('Experienced Fear');
+  title('Experienced Fear Over Time');
+  legend('show');
+  grid on;
+  hold off;
+
+  % Readiness to Interact
+  subplot(2, 2, 4); % Use the fourth subplot
+  hold on;
+  for i = 1:numAgents
+      plot(Ri(i, 1:numStep), 'DisplayName', ['Agent ' num2str(i)]);
+  end
+  xlabel('Time Steps');
+  ylabel('Readiness to Interact');
+  title('Readiness to Interact Over Time');
+  legend('show');
+  grid on;
+  hold off;
+
+
 % graph equillibria
   figure('Name', 'Equillibria State');
 

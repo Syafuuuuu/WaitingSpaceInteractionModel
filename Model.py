@@ -192,6 +192,84 @@ ax4.set_zlabel('Levels')
 plt.tight_layout()
 plt.show()
 
+# Plot 2D line plots for each parameter over time, with different colors per agent
+fig2, axes = plt.subplots(2, 2, figsize=(12, 8))
+fig2.suptitle('Temporal Factors (2D Line Plots)')
+
+# Dynamic Happiness
+for i in range(numAgents):
+    axes[0, 0].plot(time, Dh[i, :], label=f'Agent {i+1}')
+axes[0, 0].set_title('Dynamic Happiness')
+axes[0, 0].set_xlabel('Time steps')
+axes[0, 0].set_ylabel('Levels')
+axes[0, 0].legend()
+
+# Dynamic Sadness
+for i in range(numAgents):
+    axes[0, 1].plot(time, Ds[i, :], label=f'Agent {i+1}')
+axes[0, 1].set_title('Dynamic Sadness')
+axes[0, 1].set_xlabel('Time steps')
+axes[0, 1].set_ylabel('Levels')
+axes[0, 1].legend()
+
+# Dynamic Fear
+for i in range(numAgents):
+    axes[1, 0].plot(time, Df[i, :], label=f'Agent {i+1}')
+axes[1, 0].set_title('Dynamic Fear')
+axes[1, 0].set_xlabel('Time steps')
+axes[1, 0].set_ylabel('Levels')
+axes[1, 0].legend()
+
+# Long-Term Willingness to Interact
+for i in range(numAgents):
+    axes[1, 1].plot(time, Li[i, :], label=f'Agent {i+1}')
+axes[1, 1].set_title('Long-Term Willingness to Interact')
+axes[1, 1].set_xlabel('Time steps')
+axes[1, 1].set_ylabel('Levels')
+axes[1, 1].legend()
+
+plt.tight_layout()
+plt.show()
+
+# Plot 2D line plots for each parameter over time, with different colors per agent
+fig4, axes = plt.subplots(2, 2, figsize=(12, 8))
+fig4.suptitle('Temporal Factors (2D Line Plots)')
+
+# Positive Affect
+for i in range(numAgents):
+    axes[0, 0].plot(time, Pa[i, :], label=f'Agent {i+1}')
+axes[0, 0].set_title('Positive Affect')
+axes[0, 0].set_xlabel('Time steps')
+axes[0, 0].set_ylabel('Levels')
+axes[0, 0].legend()
+
+# Short Term Readiness to Interact
+for i in range(numAgents):
+    axes[0, 1].plot(time, Si[i, :], label=f'Agent {i+1}')
+axes[0, 1].set_title('Short Term Readiness to Interact')
+axes[0, 1].set_xlabel('Time steps')
+axes[0, 1].set_ylabel('Levels')
+axes[0, 1].legend()
+
+# Experienced Fear
+for i in range(numAgents):
+    axes[1, 0].plot(time, Psi[i, :], label=f'Agent {i+1}')
+axes[1, 0].set_title('Experienced Fear')
+axes[1, 0].set_xlabel('Time steps')
+axes[1, 0].set_ylabel('Levels')
+axes[1, 0].legend()
+
+# Readiness to Interact
+for i in range(numAgents):
+    axes[1, 1].plot(time, Ri[i, :], label=f'Agent {i+1}')
+axes[1, 1].set_title('Readiness to Interact')
+axes[1, 1].set_xlabel('Time steps')
+axes[1, 1].set_ylabel('Levels')
+axes[1, 1].legend()
+
+plt.tight_layout()
+plt.show()
+
 
 #Interactive Graph
 
