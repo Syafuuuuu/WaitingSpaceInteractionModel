@@ -21,6 +21,23 @@ class Agent:
         self.Ds = 0.5
         self.Df = 0.5
         self.Li = 0.5
+        
+        
+    # def printInfo(self):
+    #     print("Name: " , self.name)
+    #     print("PosX: " , self.posX)
+    #     print("PosY: " , self.posY)
+    #     print("Ha: " , self.Ha)
+    #     print("Sd: " , self.Sd)
+    #     print("Fe: " , self.Fe)
+    #     print("Ex: " , self.Ex)
+    #     print("Op: " , self.Op)
+    #     print("Nu: " , self.Nu)
+    #     print("Eh: " , self.Eh)
+    #     print("Nc: " , self.Nc)
+    #     print("Ni: " , self.Ni)
+        
+        
 
 # # Initialize session state for agents and television positions if not already initialized
 # if 'agents' not in st.session_state:
@@ -104,14 +121,27 @@ with st.container():
     with col3:
         
         st.write("### Hobbies")
-        hobbies = ['Cognitive', 'Cultural', 'Religious', 'Social', 'Gardening', 'Travelling', 'Physical']
-        for idx, hobby in enumerate(hobbies):
-            st.checkbox(hobby, key=f"hobby_{idx}")
+        #hobbies = ['Cognitive', 'Cultural', 'Religious', 'Social', 'Gardening', 'Travelling', 'Physical']
+        hob1 = st.checkbox("Cognitive", key="hob1")
+        hob2 = st.checkbox("Cultural", key="hob2")
+        hob3 = st.checkbox("Religious", key="hob3")
+        hob4 = st.checkbox("Social", key="hob4")
+        hob5 = st.checkbox("Gardening", key="hob5")
+        hob6 = st.checkbox("Travelling", key="hob6")
+        hob7 = st.checkbox("Physical", key="hob7")
+        #for idx, hobby in enumerate(hobbies):
+        #    st.checkbox(hobby, key=f"hobby_{idx}")
             
         st.write("### Interests")
-        interests = ['Realistic', 'Investigating', 'Artistic', 'Social', 'Enterprising', 'Conventional']
-        for idx, interest in enumerate(interests):
-            st.checkbox(interest, key=f"interest_{idx}")
+        int1 = st.checkbox("Realistic", key="int1")
+        int2 = st.checkbox("Investigating", key="int2")
+        int3 = st.checkbox("Artistic", key="int3")
+        int4 = st.checkbox("Social", key="int4")
+        int5 = st.checkbox("Enterprising", key="int5")
+        int6 = st.checkbox("Conventional", key="int6")
+        #interests = ['Realistic', 'Investigating', 'Artistic', 'Social', 'Enterprising', 'Conventional']
+        #for idx, interest in enumerate(interests):
+        #    st.checkbox(interest, key=f"interest_{idx}")
 
     with col4:
         name = st.text_input('Name', key='name')
@@ -122,6 +152,10 @@ with st.container():
         
         if st.button('### Add Agent'):
             try:
+                selected_hobbies = [hob1,hob2,hob3,hob4,hob5,hob6,hob7]
+                selected_interests = [int1, int2, int3, int4, int5, int6]
+                print(selected_hobbies)
+                print(selected_interests)
                 # Convert input to integer coordinates
                 agent_x = int(agent_x)
                 agent_y = int(agent_y)
@@ -130,11 +164,8 @@ with st.container():
                     st.session_state.agents.append((agent_x, agent_y))
                     
                     st.session_state.agentsDetail.append(Agent(name=name, agent_X=agent_x, agent_Y=agent_y, Ha=Ha, Sd=Sd, Fe=Fe, Ex=Ex, Op=Op, Nu=Nu, Eh=Eh, Nc=0.5, Ni=0.5))
-                    for agent in st.session_state.agentsDetail:
-                        print(agent.name)
-                        print(agent.posX)
-                        print(agent.posY)
-                        print(agent.Ni)
+                    # for agent in st.session_state.agentsDetail:
+                    #     agent.printInfo()
                     
                     
                     st.rerun()  # Re-render the app to update the grid
