@@ -5,7 +5,7 @@ st.set_page_config(
     page_icon="👋",
 )
 
-st.title("Main Page")
+st.title("Public Interaction Model in Public Spaces")
 st.sidebar.success("Select a page above.")
 
 # Initialize session state for agents and television positions if not already initialized
