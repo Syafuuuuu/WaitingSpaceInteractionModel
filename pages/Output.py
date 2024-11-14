@@ -236,6 +236,8 @@ def RunModel(Agents:np.array):
 
 if st.button("Run"):
     
+    #Run n of clusters using the model
+    
     ArrayOfAgents = np.array([[agent.Ha, agent.Sd, agent.Fe, agent.Ex, agent.Op, agent.Nu, agent.Eh, agent.Nc, agent.Ni]
                         for agent in st.session_state.agentsDetail])
     

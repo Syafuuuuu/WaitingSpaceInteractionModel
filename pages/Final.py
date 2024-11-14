@@ -349,4 +349,4 @@ if st.button("Run Simulation"):
         st.write(f"### Cluster Similarity for Cluster {tv_index + 1}: {cluster_similarity:.2f}")
         
         # Run simulation for the agents in this cluster
-        RunModel(np.array([[agent.Ha, agent.Sd, agent.Fe, agent.Ex, agent.Op, agent.Nu, agent.Eh, agent.Nc, agent.Ni] for agent in agents]), tv_index)
+        RunModel(np.array([[agent.Ha, agent.Sd, agent.Fe, agent.Ex, agent.Op, agent.Nu, agent.Eh, agent.Nc, agent.Ni] for agent in agents]), tv_index)  

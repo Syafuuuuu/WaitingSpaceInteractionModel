@@ -267,4 +267,5 @@ if st.button("Run Simulation"):
     for tv_index, agents in clusters.items():
         st.write(f"#### Cluster for Television {tv_index + 1}:")
         RunModel(np.array([[agent.Ha, agent.Sd, agent.Fe, agent.Ex, agent.Op, agent.Nu, agent.Eh, agent.Nc, agent.Ni] for agent in agents]), tv_index)
+        
 
